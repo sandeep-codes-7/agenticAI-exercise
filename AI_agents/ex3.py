@@ -20,14 +20,19 @@ def add(a: int, b:int)->int:
     """performs addition operation upon two integer values"""
     return a+b
 
-tools = [add]
+@tool
+def multi(a: int, b: int):
+    """multiplication"""
+    return a*b
 
-model = ChatOllama(model="llama3.2:3b").bind_tools(tools)
+tools = [add, multi]
+
+model = ChatOllama(model="qwen3:8b").bind_tools(tools)
 
 
 def model_call(state: AgentState)-> AgentState:
 
-    system_prompt = SystemMessage(content="you are a smart AI agent and answers my queries to the best of your ability.")
+    system_prompt = SystemMessage(content="you are my AI assistant and answers my queries to the best of your ability.")
 
     response = model.invoke([system_prompt] + state["messages"])
 
